@@ -1,0 +1,257 @@
+/* ============================================
+   SECTIONS — Hero, Quotes, Breathing, Rituals,
+              Journal, Focus, Footer
+   ============================================ */
+
+/* ——— HERO ——— */
+#hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--c1), var(--c2), var(--c3));
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease infinite;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.22;
+  animation: floatBlob 22s ease-in-out infinite;
+  pointer-events: none;
+}
+.blob-1 { width: 550px; height: 550px; background: #fff;    top: -100px; left: -140px; animation-delay: 0s; }
+.blob-2 { width: 420px; height: 420px; background: #FFD700; bottom: -60px; right: -90px; animation-delay: -8s; }
+.blob-3 { width: 320px; height: 320px; background: #FF6B6B; top: 55%; left: 60%; animation-delay: -15s; }
+
+#canvas-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInUp 1.1s var(--ease-out) both;
+}
+
+.time-icon {
+  font-size: 3rem;
+  display: inline-block;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 20px rgba(255,255,180,0.5));
+  animation: rotateSun 30s linear infinite;
+}
+
+.greeting {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 9vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  margin-bottom: 4px;
+  line-height: 1.1;
+}
+
+.hero-clock {
+  font-size: clamp(3.8rem, 13vw, 8.5rem);
+  font-weight: 200;
+  letter-spacing: 8px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin: 18px 0 10px;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.2);
+}
+
+.seconds-bar {
+  max-width: 300px;
+  width: 80%;
+  margin: 0 auto 14px;
+  height: 2px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.seconds-fill {
+  height: 100%;
+  background: rgba(255,255,255,0.8);
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+.date-line {
+  font-size: clamp(0.72rem, 2vw, 0.88rem);
+  letter-spacing: 4px;
+  opacity: 0.7;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-bottom: 36px;
+}
+
+/* Mood Selector */
+.mood-selector {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.mood-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  color: white;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.25s var(--ease-out);
+  cursor: pointer;
+}
+.mood-btn .mood-emoji { font-size: 1.4rem; }
+.mood-btn:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,0.35);
+}
+.mood-btn.selected {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.5);
+  box-shadow: 0 0 20px rgba(255,255,255,0.15);
+  transform: translateY(-3px);
+}
+
+.mood-message {
+  font-size: 0.8rem;
+  opacity: 0;
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+  transition: opacity 0.4s ease;
+  height: 20px;
+  font-style: italic;
+}
+.mood-message.visible { opacity: 0.7; }
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.45;
+  animation: hintBounce 2.4s ease infinite;
+  z-index: 10;
+  color: white;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.scroll-arrow {
+  width: 16px; height: 16px;
+  border-right: 1.5px solid white;
+  border-bottom: 1.5px solid white;
+  transform: rotate(45deg);
+}
+
+/* ——— QUOTES ——— */
+#quotes {
+  padding: var(--section-pad-y) 24px;
+  background: linear-gradient(180deg, #b03060 0%, #7B241C 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ——— BREATHING ——— */
+#breathing {
+  padding: var(--section-pad-y) 24px;
+  background: linear-gradient(180deg, #1A5276 0%, #0D3D55 100%);
+  text-align: center;
+  position: relative;
+}
+
+/* ——— RITUALS ——— */
+#rituals {
+  padding: var(--section-pad-y) 24px;
+  background: linear-gradient(180deg, #1E8449 0%, #145A32 100%);
+  position: relative;
+}
+
+/* ——— JOURNAL ——— */
+#journal {
+  padding: var(--section-pad-y) 24px;
+  background: linear-gradient(180deg, #6C3483 0%, #4A235A 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ——— FOCUS ——— */
+#focus {
+  padding: var(--section-pad-y) 24px;
+  background: linear-gradient(180deg, #2C1654 0%, #1a1a2e 100%);
+  text-align: center;
+}
+
+/* ——— FOOTER ——— */
+footer {
+  padding: 52px 24px;
+  background: #0d0820;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-style: italic;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+.footer-text {
+  font-size: 0.78rem;
+  opacity: 0.35;
+  letter-spacing: 1px;
+  line-height: 2;
+}
+
+.footer-msg {
+  font-size: 0.88rem;
+  opacity: 0.6;
+  font-weight: 300;
+  font-style: italic;
+  max-width: 400px;
+}
+
+.footer-divider {
+  width: 40px;
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+  margin: 6px auto;
+}
