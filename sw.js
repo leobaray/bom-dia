@@ -1,9 +1,9 @@
 /**
- * Service Worker - Bom Dia
- * Cache e funcionalidades offline
+ * BOM DIA — Service Worker
+ * Premium PWA Experience
  */
 
-const CACHE_NAME = 'bom-dia-v1';
+const CACHE_NAME = 'bom-dia-v2';
 const ASSETS = [
   '/',
   '/index.html',
@@ -12,7 +12,7 @@ const ASSETS = [
   '/manifest.json',
 ];
 
-// Install - cache assets
+// Install — Cache all assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -22,7 +22,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate - clean old caches
+// Activate — Clean old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -36,24 +36,27 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch - serve from cache, fallback to network
+// Fetch — Network first, fallback to cache (for fresh content)
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  // Skip non-same-origin requests
+  if (!event.request.url.startsWith(self.location.origin)) return;
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200) return response;
-
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, clone);
-        });
-
+      const fetchPromise = fetch(event.request).then((response) => {
+        // Clone and update cache
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, clone);
+          });
+        }
         return response;
-      });
+      }).catch(() => cached);
+
+      return cached || fetchPromise;
     })
   );
 });

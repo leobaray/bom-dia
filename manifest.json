@@ -1,12 +1,15 @@
 {
-  "name": "Bom Dia",
+  "name": "Bom Dia — Ritual Matinal",
   "short_name": "Bom Dia",
-  "description": "Comece cada dia com intenção, inspiração e presença",
+  "description": "Comece cada dia com intenção, inspiração e presença. Um ritual matinal de mindfulness.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f0e0c",
-  "theme_color": "#0f0e0c",
+  "background_color": "#0a0a0c",
+  "theme_color": "#0a0a0c",
   "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "categories": ["lifestyle", "health", "productivity", "wellness"],
   "icons": [
     {
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c4a35a'/></svg>",
@@ -15,6 +18,22 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["lifestyle", "health", "productivity"],
-  "lang": "pt-BR"
+  "screenshots": [],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Ver Frase",
+      "short_name": "Frase",
+      "description": "Ver frase inspiradora do momento",
+      "url": "/#quotes",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c4a35a'/></svg>", "sizes": "any" }]
+    },
+    {
+      "name": "Respiração",
+      "short_name": "Respirar",
+      "description": "Exercício de respiração guiada",
+      "url": "/#breathing",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c4a35a'/></svg>", "sizes": "any" }]
+    }
+  ]
 }
