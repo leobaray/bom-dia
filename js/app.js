@@ -71,16 +71,16 @@ const state = {
    ============================================ */
 const themes = {
   auto: (hour) => {
-    if (hour >= 5 && hour < 7) return { hue: 30, sat: 50%, light: 55%, glow: 0.12 };   // Dawn
-    if (hour >= 7 && hour < 12) return { hue: 45, sat: 55%, light: 55%, glow: 0.10 };  // Morning
-    if (hour >= 12 && hour < 17) return { hue: 200, sat: 40%, light: 55%, glow: 0.10 }; // Day
-    if (hour >= 17 && hour < 20) return { hue: 15, sat: 50%, light: 55%, glow: 0.12 };  // Evening
-    return { hue: 260, sat: 45%, light: 55%, glow: 0.10 };                              // Night
+    if (hour >= 5 && hour < 7) return { hue: 30, sat: '50%', light: '55%', glow: 0.12 };   // Dawn
+    if (hour >= 7 && hour < 12) return { hue: 45, sat: '55%', light: '55%', glow: 0.10 };  // Morning
+    if (hour >= 12 && hour < 17) return { hue: 200, sat: '40%', light: '55%', glow: 0.10 }; // Day
+    if (hour >= 17 && hour < 20) return { hue: 15, sat: '50%', light: '55%', glow: 0.12 };  // Evening
+    return { hue: 260, sat: '45%', light: '55%', glow: 0.10 };                              // Night
   },
-  morning: { hue: 45, sat: 55%, light: 55%, glow: 0.10 },
-  day: { hue: 200, sat: 40%, light: 55%, glow: 0.10 },
-  evening: { hue: 15, sat: 50%, light: 55%, glow: 0.12 },
-  night: { hue: 260, sat: 45%, light: 55%, glow: 0.10 },
+  morning: { hue: 45, sat: '55%', light: '55%', glow: 0.10 },
+  day: { hue: 200, sat: '40%', light: '55%', glow: 0.10 },
+  evening: { hue: 15, sat: '50%', light: '55%', glow: 0.12 },
+  night: { hue: 260, sat: '45%', light: '55%', glow: 0.10 },
 };
 
 function applyTheme(themeData) {
@@ -220,16 +220,24 @@ function resetQuoteTimer() {
    RITUALS — Persistent Checklists
    ============================================ */
 function loadRituals() {
-  const today = new Date().toDateString();
-  const saved = localStorage.getItem('bomdia-rituals-' + today);
-  if (saved) {
-    state.completedRituals = new Set(JSON.parse(saved));
+  try {
+    const today = new Date().toDateString();
+    const saved = localStorage.getItem('bomdia-rituals-' + today);
+    if (saved) {
+      state.completedRituals = new Set(JSON.parse(saved));
+    }
+  } catch (e) {
+    console.warn('Erro ao carregar rituais:', e);
   }
 }
 
 function saveRituals() {
-  const today = new Date().toDateString();
-  localStorage.setItem('bomdia-rituals-' + today, JSON.stringify([...state.completedRituals]));
+  try {
+    const today = new Date().toDateString();
+    localStorage.setItem('bomdia-rituals-' + today, JSON.stringify([...state.completedRituals]));
+  } catch (e) {
+    console.warn('Erro ao salvar rituais:', e);
+  }
 }
 
 function toggleRitual(index) {
@@ -238,6 +246,8 @@ function toggleRitual(index) {
   if (!wasCompleted) {
     state.completedRituals.add(index);
     triggerConfetti();
+    // Initialize audio on user gesture
+    initAudio();
     playSound('check');
   } else {
     state.completedRituals.delete(index);
@@ -376,7 +386,9 @@ const moodMessages = {
 function selectMood(mood) {
   state.selectedMood = mood;
   document.querySelectorAll('.mood-btn').forEach(btn => {
-    btn.classList.toggle('selected', btn.dataset.mood === mood);
+    const isSelected = btn.dataset.mood === mood;
+    btn.classList.toggle('selected', isSelected);
+    btn.setAttribute('aria-pressed', isSelected);
   });
 
   const msgEl = document.getElementById('moodMessage');
@@ -389,17 +401,23 @@ function selectMood(mood) {
 }
 
 function loadMood() {
-  const saved = localStorage.getItem('bomdia-mood-' + new Date().toDateString());
-  if (saved && moodMessages[saved]) {
-    state.selectedMood = saved;
-    document.querySelectorAll('.mood-btn').forEach(btn => {
-      btn.classList.toggle('selected', btn.dataset.mood === saved);
-    });
-    const msgEl = document.getElementById('moodMessage');
-    if (msgEl) {
-      msgEl.textContent = moodMessages[saved];
-      msgEl.classList.add('visible');
+  try {
+    const saved = localStorage.getItem('bomdia-mood-' + new Date().toDateString());
+    if (saved && moodMessages[saved]) {
+      state.selectedMood = saved;
+      document.querySelectorAll('.mood-btn').forEach(btn => {
+        const isSelected = btn.dataset.mood === saved;
+        btn.classList.toggle('selected', isSelected);
+        btn.setAttribute('aria-pressed', isSelected);
+      });
+      const msgEl = document.getElementById('moodMessage');
+      if (msgEl) {
+        msgEl.textContent = moodMessages[saved];
+        msgEl.classList.add('visible');
+      }
     }
+  } catch (e) {
+    console.warn('Erro ao carregar humor:', e);
   }
 }
 
@@ -589,25 +607,33 @@ function triggerConfetti() {
 /* ============================================
    SOUND — Subtle Audio Feedback
    ============================================ */
-const audioCtx = typeof window !== 'undefined' ? new (window.AudioContext || window.webkitAudioContext)() : null;
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx && typeof window !== 'undefined') {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioCtx;
+}
 
 function playSound(type) {
-  if (!audioCtx) return;
-  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const ctx = initAudio();
+  if (!ctx) return;
+  if (ctx.state === 'suspended') ctx.resume();
 
-  const oscillator = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
+  const oscillator = ctx.createOscillator();
+  const gainNode = ctx.createGain();
 
   oscillator.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
+  gainNode.connect(ctx.destination);
 
   if (type === 'check') {
-    oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-    oscillator.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.1); // G5
-    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-    oscillator.start(audioCtx.currentTime);
-    oscillator.stop(audioCtx.currentTime + 0.15);
+    oscillator.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+    oscillator.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.1); // G5
+    gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + 0.15);
   }
 }
 
@@ -729,6 +755,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.mood-btn').forEach(btn => {
     btn.addEventListener('click', () => selectMood(btn.dataset.mood));
   });
+
+  // Initialize audio on first user interaction
+  document.addEventListener('click', initAudio, { once: true });
+  document.addEventListener('keydown', initAudio, { once: true });
 
   // Initial theme
   updateTheme();
