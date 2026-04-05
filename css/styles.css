@@ -1089,45 +1089,357 @@ footer {
 }
 
 /* ===== RESPONSIVE ===== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  :root {
+    --container: min(720px, calc(100vw - 48px));
+  }
+
+  .hero-glow {
+    width: min(700px, 100vw);
+    height: min(700px, 100vw);
+  }
+
+  .quote-card {
+    padding: clamp(32px, 5vw, 48px);
+  }
+}
+
+/* Mobile Landscape */
 @media (max-width: 720px) {
   :root {
-    --section-v: clamp(70px, 10vw, 100px);
+    --section-v: clamp(60px, 10vw, 90px);
     --section-h: 20px;
+    --container: calc(100vw - 40px);
   }
 
   .dot-nav { display: none; }
 
+  .hero-content {
+    padding: 24px 16px;
+  }
+
+  .hero-greeting {
+    font-size: clamp(2.5rem, 9vw, 4rem);
+  }
+
+  .clock-time {
+    font-size: clamp(2.8rem, 9vw, 4rem);
+    letter-spacing: 6px;
+  }
+
+  .clock-sec {
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  }
+
+  .seconds-bar {
+    width: min(240px, 60vw);
+  }
+
+  .mood-selector {
+    gap: 6px;
+  }
+
+  .mood-btn {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
+  .mood-btn .mood-emoji {
+    font-size: 1.3rem;
+  }
+
+  .mood-btn span {
+    font-size: 0.55rem;
+  }
+
   .ritual {
     grid-template-columns: auto 1fr auto;
-    gap: 14px;
-    padding: 16px 18px;
+    gap: 12px;
+    padding: 14px 16px;
   }
 
   .ritual-icon, .ritual-num { display: none; }
 
+  .ritual-check {
+    width: 22px;
+    height: 22px;
+  }
+
   .quote-card {
-    padding: 32px 22px;
+    padding: 28px 20px;
   }
 
   .quote-mark {
-    font-size: 6rem;
+    font-size: 5rem;
+    top: 4px;
+    left: 16px;
   }
 
-  .mood-selector {
-    gap: 8px;
+  .quote-nav {
+    gap: 16px;
   }
 
-  .mood-btn {
-    padding: 12px 14px;
-  }
-
-  .mood-btn .mood-emoji {
-    font-size: 1.4rem;
+  .nav-btn {
+    width: 42px;
+    height: 42px;
   }
 
   .breath-circle-container {
-    width: 240px;
-    height: 240px;
+    width: 220px;
+    height: 220px;
+    margin: 28px auto;
+  }
+
+  .breath-phase {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+  }
+
+  .breath-counter {
+    font-size: 2.5rem;
+  }
+
+  .focus-word {
+    font-size: clamp(2rem, 7vw, 3.5rem);
+  }
+
+  .section-title {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+  }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+  :root {
+    --section-v: clamp(50px, 8vw, 70px);
+    --section-h: 16px;
+    --container: calc(100vw - 32px);
+  }
+
+  .hero-content {
+    padding: 20px 12px;
+  }
+
+  .hero-greeting {
+    font-size: clamp(2.2rem, 10vw, 3.5rem);
+    letter-spacing: 2px;
+  }
+
+  .clock-time {
+    font-size: clamp(2.2rem, 10vw, 3.5rem);
+    letter-spacing: 4px;
+  }
+
+  .clock-sec {
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+  }
+
+  .seconds-bar {
+    width: min(200px, 50vw);
+    margin: 12px auto 14px;
+  }
+
+  .date-line {
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
+    letter-spacing: 3px;
+  }
+
+  .scroll-cue {
+    bottom: 28px;
+  }
+
+  .scroll-cue span {
+    font-size: 0.5rem;
+  }
+
+  .mood-selector {
+    gap: 6px;
+    margin-top: 24px;
+  }
+
+  .mood-btn {
+    padding: 8px 10px;
+    border-radius: 12px;
+  }
+
+  .mood-btn .mood-emoji {
+    font-size: 1.2rem;
+  }
+
+  .mood-btn span {
+    font-size: 0.5rem;
+  }
+
+  .mood-message {
+    font-size: 0.8rem;
+    padding: 10px 16px;
+  }
+
+  .section-header {
+    margin-bottom: 40px;
+  }
+
+  .section-eyebrow {
+    font-size: 0.55rem;
+    letter-spacing: 4px;
+    gap: 8px;
+  }
+
+  .section-eyebrow::before,
+  .section-eyebrow::after {
+    width: 24px;
+  }
+
+  .section-title {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+  }
+
+  .section-desc {
+    font-size: 0.85rem;
+  }
+
+  .quote-card {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
+
+  .quote-text {
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    line-height: 1.6;
+  }
+
+  .quote-author {
+    font-size: 0.65rem;
+    margin-top: 16px;
+  }
+
+  .quote-bar {
+    margin-top: 24px;
+  }
+
+  .quote-nav {
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .nav-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .quote-counter {
+    font-size: 0.65rem;
+    min-width: 52px;
+  }
+
+  .ritual {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+
+  .ritual-check {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ritual-name {
+    font-size: 0.85rem;
+  }
+
+  .ritual-desc {
+    font-size: 0.7rem;
+  }
+
+  .breath-circle-container {
+    width: 180px;
+    height: 180px;
+    margin: 20px auto;
+  }
+
+  .breath-phase {
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+  }
+
+  .breath-counter {
+    font-size: 2rem;
+    min-height: 3.5rem;
+  }
+
+  .breath-buttons {
+    gap: 10px;
+  }
+
+  .breath-btn {
+    padding: 12px 24px;
+    font-size: 0.75rem;
+  }
+
+  .focus-icon {
+    font-size: 3rem;
+  }
+
+  .focus-word {
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+    letter-spacing: 4px;
+  }
+
+  .focus-desc {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  footer {
+    padding: 48px 20px;
+  }
+
+  .footer-msg {
+    font-size: 0.8rem;
+  }
+
+  .footer-brand {
+    font-size: 1rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 360px) {
+  :root {
+    --section-h: 12px;
+  }
+
+  .hero-greeting {
+    font-size: 2rem;
+  }
+
+  .clock-time {
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+  }
+
+  .mood-btn {
+    padding: 6px 8px;
+  }
+
+  .mood-btn .mood-emoji {
+    font-size: 1rem;
+  }
+
+  .mood-btn span {
+    display: none;
+  }
+
+  .ritual {
+    padding: 10px 12px;
+  }
+
+  .quote-card {
+    padding: 20px 14px;
   }
 }
 
@@ -1137,5 +1449,28 @@ footer {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .reveal, .reveal.visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ===== SAFE AREA INSETS (iOS notch) ===== */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .hero-content {
+    padding-left: max(32px, env(safe-area-inset-left));
+    padding-right: max(32px, env(safe-area-inset-right));
+  }
+
+  .dot-nav {
+    right: max(28px, env(safe-area-inset-right));
   }
 }
