@@ -3,546 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bom Dia</title>
-  <meta name="description" content="Comece cada dia com intenção, inspiração e presença.">
+  <title>Bom Dia — Comece cada dia com intenção</title>
+  <meta name="description" content="Comece cada dia com intenção, inspiração e presença. Um ritual matinal de mindfulness, frases inspiradoras e foco diário.">
   <meta name="theme-color" content="#0f0e0c">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23c4a35a'/></svg>">
+
+  <!-- Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    @property --accent {
-      syntax: '<color>';
-      inherits: true;
-      initial-value: #c4a35a;
-    }
 
-    :root {
-      --bg: #0f0e0c;
-      --bg-alt: #141311;
-      --surface: #1c1b18;
-      --border: rgba(255,255,255,0.06);
-      --text: #e8e4dd;
-      --text-dim: rgba(232,228,221,0.4);
-      --accent: #c4a35a;
-      --accent-glow: rgba(196,163,90,0.08);
-      --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-      --sans: 'Inter', system-ui, -apple-system, sans-serif;
-      --ease: cubic-bezier(0.16, 1, 0.3, 1);
-      transition: --accent 2s ease;
-    }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
 
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23c4a35a'/></svg>">
 
-    button { cursor: pointer; font: inherit; border: none; background: none; color: inherit; }
-    a { color: inherit; text-decoration: none; }
-
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-    ::selection { background: rgba(196,163,90,0.3); }
-
-    /* ===== UTILITIES ===== */
-    .container { max-width: 780px; margin: 0 auto; }
-    .section { padding: clamp(80px, 12vw, 140px) 24px; }
-    .section--alt {
-      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 25%, var(--bg-alt) 75%, var(--bg) 100%);
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.8s ease, transform 0.8s var(--ease);
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ===== HERO ===== */
-    #hero {
-      min-height: 100vh;
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-glow {
-      position: absolute;
-      width: min(800px, 110vw);
-      height: min(800px, 110vw);
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      transition: background 2s ease;
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 24px;
-      animation: fadeIn 1.4s var(--ease) both;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-greeting {
-      font-family: var(--serif);
-      font-size: clamp(3.5rem, 10vw, 7rem);
-      font-weight: 300;
-      letter-spacing: 2px;
-      line-height: 1.1;
-      margin-bottom: 12px;
-    }
-
-    .hero-clock {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      margin: 8px 0 24px;
-    }
-
-    .clock-time {
-      font-size: clamp(2.8rem, 8vw, 4.5rem);
-      font-weight: 200;
-      letter-spacing: 6px;
-      font-variant-numeric: tabular-nums;
-      line-height: 1;
-    }
-
-    .clock-sec {
-      font-size: clamp(0.9rem, 2.2vw, 1.2rem);
-      font-weight: 300;
-      opacity: 0.25;
-      letter-spacing: 2px;
-      margin-left: 6px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .hero-date {
-      font-size: clamp(0.68rem, 1.6vw, 0.8rem);
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      font-weight: 400;
-    }
-
-    .scroll-cue {
-      position: absolute;
-      bottom: 36px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: var(--text-dim);
-      animation: drift 3s ease-in-out infinite;
-      z-index: 2;
-      transition: color 0.3s ease;
-      line-height: 0;
-    }
-    .scroll-cue:hover { color: var(--text); }
-
-    @keyframes drift {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(6px); }
-    }
-
-    /* ===== SECTION HEADERS ===== */
-    .section-header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .section-eyebrow {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 14px;
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      font-weight: 400;
-      letter-spacing: 0.5px;
-      line-height: 1.2;
-    }
-
-    .section-desc {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      font-weight: 300;
-      margin-top: 10px;
-    }
-
-    /* ===== QUOTES ===== */
-    .quote-card {
-      position: relative;
-      background: var(--bg-alt);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: clamp(36px, 6vw, 56px);
-      padding-top: clamp(48px, 7vw, 72px);
-    }
-
-    .quote-mark {
-      font-family: var(--serif);
-      font-size: 8rem;
-      line-height: 0.5;
-      color: var(--accent);
-      opacity: 0.1;
-      position: absolute;
-      top: 16px;
-      left: clamp(24px, 4vw, 40px);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .quote-cat {
-      display: inline-block;
-      font-size: 0.6rem;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent);
-      opacity: 0.7;
-      margin-bottom: 20px;
-      transition: opacity 0.4s ease;
-    }
-    .quote-cat.out { opacity: 0; }
-
-    .quote-text {
-      font-family: var(--serif);
-      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-      font-weight: 400;
-      font-style: italic;
-      line-height: 1.85;
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .quote-text.out { opacity: 0; transform: translateY(8px); }
-
-    .quote-author {
-      display: block;
-      margin-top: 24px;
-      font-family: var(--sans);
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      font-style: normal;
-      transition: opacity 0.4s ease;
-    }
-    .quote-author.out { opacity: 0; }
-
-    .quote-bar {
-      height: 1px;
-      background: var(--border);
-      margin-top: 32px;
-      overflow: hidden;
-    }
-    .quote-bar-fill {
-      height: 100%;
-      background: var(--accent);
-      opacity: 0.35;
-      width: 0%;
-    }
-
-    .quote-nav {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      margin-top: 28px;
-    }
-
-    .nav-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-dim);
-      transition: all 0.25s var(--ease);
-    }
-    .nav-btn:hover {
-      border-color: rgba(255,255,255,0.14);
-      color: var(--text);
-      background: rgba(255,255,255,0.03);
-    }
-    .nav-btn:focus-visible {
-      outline: 1px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .quote-counter {
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 3px;
-      color: var(--text-dim);
-      font-variant-numeric: tabular-nums;
-      min-width: 52px;
-      text-align: center;
-    }
-
-    /* ===== RITUALS ===== */
-    .rituals-list {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .ritual {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding: 20px 24px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.3s var(--ease);
-      user-select: none;
-    }
-    .ritual:hover { background: rgba(255,255,255,0.02); }
-    .ritual:focus-visible {
-      outline: 1px solid var(--accent);
-      outline-offset: -1px;
-      border-radius: 12px;
-    }
-
-    .ritual-num {
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      font-weight: 400;
-      color: var(--text-dim);
-      min-width: 28px;
-      transition: color 0.35s ease;
-    }
-    .ritual--done .ritual-num { color: var(--accent); }
-
-    .ritual-body { flex: 1; }
-    .ritual-name {
-      display: block;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.2px;
-      margin-bottom: 3px;
-      transition: opacity 0.35s ease;
-    }
-    .ritual--done .ritual-name { opacity: 0.45; }
-
-    .ritual-desc {
-      display: block;
-      font-size: 0.76rem;
-      color: var(--text-dim);
-      font-weight: 300;
-    }
-
-    .ritual-check {
-      width: 22px;
-      height: 22px;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.3s var(--ease);
-      color: transparent;
-    }
-    .ritual--done .ritual-check {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: var(--bg);
-    }
-
-    .rituals-footer {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-top: 32px;
-      padding: 0 24px;
-    }
-
-    .rituals-bar {
-      flex: 1;
-      height: 2px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .rituals-bar-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 2px;
-      transition: width 0.5s var(--ease);
-    }
-
-    .rituals-count {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    /* ===== FOCUS ===== */
-    .focus-content {
-      text-align: center;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-
-    .focus-word {
-      font-family: var(--serif);
-      font-size: clamp(3rem, 10vw, 5.5rem);
-      font-weight: 300;
-      letter-spacing: 3px;
-      color: var(--accent);
-      margin: 20px 0 28px;
-      line-height: 1.1;
-    }
-
-    .focus-desc {
-      font-size: 0.95rem;
-      line-height: 1.85;
-      color: var(--text-dim);
-      font-weight: 300;
-      max-width: 420px;
-      margin: 0 auto;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      padding: 60px 24px;
-      text-align: center;
-      border-top: 1px solid var(--border);
-    }
-
-    .footer-msg {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-      font-weight: 300;
-      font-style: italic;
-      margin-bottom: 24px;
-    }
-
-    .footer-line {
-      width: 32px;
-      height: 1px;
-      background: rgba(255,255,255,0.08);
-      margin: 0 auto 24px;
-    }
-
-    .footer-brand {
-      font-family: var(--serif);
-      font-size: 1.1rem;
-      font-style: italic;
-      color: var(--text-dim);
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 640px) {
-      .quote-card {
-        padding: 32px 20px 28px;
-        padding-top: 44px;
-      }
-      .quote-mark { font-size: 5rem; top: 8px; left: 16px; }
-      .ritual { padding: 16px 14px; gap: 14px; }
-      .rituals-footer { padding: 0 14px; }
-    }
-  </style>
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
+
+<!-- Navigation Dots -->
+<ul class="dot-nav">
+  <li><a class="dot-link" data-section="hero" href="#hero" data-label="Início"></a></li>
+  <li><a class="dot-link" data-section="quotes" href="#quotes" data-label="Inspiração"></a></li>
+  <li><a class="dot-link" data-section="breathing" href="#breathing" data-label="Respiração"></a></li>
+  <li><a class="dot-link" data-section="rituals" href="#rituals" data-label="Rituais"></a></li>
+  <li><a class="dot-link" data-section="focus" href="#focus" data-label="Foco"></a></li>
+</ul>
+
+<!-- Confetti Canvas -->
+<canvas id="confetti"></canvas>
 
 <!-- ===== HERO ===== -->
 <section id="hero">
   <div class="hero-glow"></div>
+  <canvas id="particles"></canvas>
+
   <div class="hero-content">
     <h1 class="hero-greeting" id="greeting">Bom Dia</h1>
+
     <div class="hero-clock">
       <span class="clock-time" id="clockTime">00:00</span>
       <span class="clock-sec" id="clockSec">00</span>
     </div>
-    <p class="hero-date" id="dateLine"></p>
+
+    <div class="seconds-bar">
+      <div class="seconds-fill" id="secondsBar"></div>
+    </div>
+
+    <p class="date-line" id="dateLine"></p>
+
+    <!-- Mood Selector -->
+    <div class="mood-selector">
+      <button class="mood-btn" data-mood="happy">
+        <span class="mood-emoji">☀️</span>
+        <span>Feliz</span>
+      </button>
+      <button class="mood-btn" data-mood="calm">
+        <span class="mood-emoji">🌿</span>
+        <span>Calmo</span>
+      </button>
+      <button class="mood-btn" data-mood="tired">
+        <span class="mood-emoji">☕</span>
+        <span>Cansado</span>
+      </button>
+      <button class="mood-btn" data-mood="motivated">
+        <span class="mood-emoji">🚀</span>
+        <span>Motivado</span>
+      </button>
+      <button class="mood-btn" data-mood="anxious">
+        <span class="mood-emoji">🌊</span>
+        <span>Ansioso</span>
+      </button>
+    </div>
+
+    <p class="mood-message" id="moodMessage"></p>
   </div>
+
   <a class="scroll-cue" href="#quotes" aria-label="Rolar para próxima seção">
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-      <path d="M4 7L10 13L16 7"/>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
     </svg>
+    <span>Explore</span>
   </a>
 </section>
 
 <!-- ===== QUOTES ===== -->
 <section id="quotes" class="section">
   <div class="container">
-    <div class="section-header reveal">
+    <header class="section-header reveal">
       <span class="section-eyebrow">Inspiração</span>
       <h2 class="section-title">Frase do Momento</h2>
-    </div>
+      <p class="section-desc">Palavras que inspiram seu dia</p>
+    </header>
+
     <div class="quote-card reveal">
       <span class="quote-mark" aria-hidden="true">&ldquo;</span>
       <span class="quote-cat" id="quoteCat"></span>
       <blockquote class="quote-text" id="quoteText"></blockquote>
       <cite class="quote-author" id="quoteAuthor"></cite>
-      <div class="quote-bar"><div class="quote-bar-fill" id="quotePF"></div></div>
+
+      <div class="quote-bar">
+        <div class="quote-bar-fill" id="quoteProgress"></div>
+      </div>
     </div>
+
     <nav class="quote-nav reveal" aria-label="Navegação de frases">
       <button class="nav-btn" id="prevBtn" aria-label="Frase anterior">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 3L5 8L10 13"/></svg>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 14L6 9L11 4"/>
+        </svg>
       </button>
       <span class="quote-counter" id="quoteCounter">1 / 12</span>
       <button class="nav-btn" id="nextBtn" aria-label="Próxima frase">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 3L11 8L6 13"/></svg>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 14L12 9L7 4"/>
+        </svg>
       </button>
     </nav>
   </div>
 </section>
 
-<!-- ===== RITUALS ===== -->
-<section id="rituals" class="section section--alt">
+<!-- ===== BREATHING ===== -->
+<section id="breathing" class="section section--alt">
   <div class="container">
-    <div class="section-header reveal">
+    <header class="section-header reveal">
+      <span class="section-eyebrow">Respiração</span>
+      <h2 class="section-title">Caixa 4-4-4-4</h2>
+      <p class="section-desc">Uma técnica de respiração para acalmar a mente</p>
+    </header>
+
+    <div class="breathing-container reveal">
+      <div class="breath-circle-container">
+        <div class="breath-circle" id="breathCircle"></div>
+      </div>
+
+      <div class="breath-phase" id="breathPhase">Respiração</div>
+      <div class="breath-counter" id="breathCounter"></div>
+
+      <div class="breath-buttons">
+        <button class="breath-btn primary" id="breathStart">Começar</button>
+        <button class="breath-btn hidden" id="breathStop">Parar</button>
+      </div>
+
+      <p class="breath-hint">Pressione espaço para iniciar/parar</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RITUALS ===== -->
+<section id="rituals" class="section">
+  <div class="container">
+    <header class="section-header reveal">
       <span class="section-eyebrow">Rituais da Manhã</span>
       <h2 class="section-title">Comece Bem</h2>
       <p class="section-desc">Pequenas ações que transformam o seu dia</p>
-    </div>
+    </header>
+
     <div class="rituals-list reveal" id="ritualsGrid"></div>
+
     <div class="rituals-footer reveal">
-      <div class="rituals-bar"><div class="rituals-bar-fill" id="rpFill" style="width:0%"></div></div>
-      <span class="rituals-count" id="rpText">0 de 6</span>
+      <div class="rituals-bar">
+        <div class="rituals-bar-fill" id="ritualProgressFill" style="width:0%"></div>
+      </div>
+      <span class="rituals-count" id="ritualProgressText">0 de 6</span>
     </div>
   </div>
 </section>
 
 <!-- ===== FOCUS ===== -->
-<section id="focus" class="section">
+<section id="focus" class="section section--alt">
   <div class="container">
     <div class="focus-content reveal">
       <span class="section-eyebrow" id="focusDayTag"></span>
+      <span class="focus-icon" id="focusIcon"></span>
       <h2 class="focus-word" id="focusWord"></h2>
       <p class="focus-desc" id="focusDesc"></p>
     </div>
@@ -556,194 +195,15 @@
   <p class="footer-brand"><em>Bom Dia</em></p>
 </footer>
 
+<!-- Scripts -->
+<script src="js/app.js" defer></script>
 <script>
-/* ===== DATA ===== */
-const quotes = [
-  { text: "Cada manhã que acordamos é uma segunda chance de sermos tudo que somos capazes.", author: "Dalai Lama", cat: "Sabedoria" },
-  { text: "O sucesso é a soma de pequenos esforços, repetidos dia após dia.", author: "Robert Collier", cat: "Consistência" },
-  { text: "Acorde com determinação. Vá dormir com satisfação.", author: "George Lorimer", cat: "Disciplina" },
-  { text: "A vida é 10% o que acontece com você e 90% como você reage a isso.", author: "Charles Swindoll", cat: "Mentalidade" },
-  { text: "Você não precisa ser incrível para começar, mas precisa começar para ser incrível.", author: "Zig Ziglar", cat: "Ação" },
-  { text: "Seja você a mudança que deseja ver no mundo.", author: "Mahatma Gandhi", cat: "Propósito" },
-  { text: "A disciplina é a ponte entre metas e realizações.", author: "Jim Rohn", cat: "Disciplina" },
-  { text: "Grandes coisas nunca vêm de zonas de conforto.", author: "Neil Strauss", cat: "Crescimento" },
-  { text: "Não espere pela oportunidade perfeita. Tome a oportunidade e faça-a perfeita.", author: "Roger Staubach", cat: "Ação" },
-  { text: "Cuide da sua mente como cuida do seu corpo. Os dois precisam de exercício.", author: "Anônimo", cat: "Equilíbrio" },
-  { text: "O momento presente sempre terá sido. Faça algo que valha lembrar.", author: "Anônimo", cat: "Presença" },
-  { text: "Foco não é dizer sim para as coisas certas. É dizer não para cem outras.", author: "Steve Jobs", cat: "Foco" },
-];
-
-const rituals = [
-  { name: "Beber Água", desc: "Hidrate o corpo logo ao acordar" },
-  { name: "Respirar Fundo", desc: "3 respirações profundas e conscientes" },
-  { name: "Ver a Luz Natural", desc: "Exponha-se à luz do dia" },
-  { name: "Movimentar o Corpo", desc: "Qualquer atividade por 5 minutos" },
-  { name: "Planejar o Dia", desc: "Defina suas 3 prioridades" },
-  { name: "Praticar Gratidão", desc: "Pense em algo bom na sua vida" },
-];
-
-const dayFocus = [
-  { word: "Repouso", desc: "Domingo é sagrado. Descanse sem culpa, carregue as energias e se permita apenas ser." },
-  { word: "Intenção", desc: "Segunda-feira abre uma semana inteira de possibilidades. Defina suas intenções com clareza." },
-  { word: "Ação", desc: "Terça é hora de colocar os planos em movimento. Cada passo te aproxima do objetivo." },
-  { word: "Equilíbrio", desc: "Quarta é a metade da jornada. Reveja seu ritmo e celebre o que já conquistou." },
-  { word: "Impulso", desc: "Quinta, o fim de semana está à vista. Use essa energia para avançar com confiança." },
-  { word: "Leveza", desc: "Sexta merece ser vivida com suavidade. Celebre as conquistas da semana." },
-  { word: "Presença", desc: "Sábado é todo seu. Esteja inteiramente presente no que te faz bem." },
-];
-
-const diasSemana = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
-const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-
-/* ===== THEME ===== */
-let lastHour = -1;
-
-function updateAccent(hour) {
-  let accent, glow;
-  if      (hour >= 5  && hour < 7)  { accent = '#d4956b'; glow = 'rgba(212,149,107,0.10)'; }
-  else if (hour >= 7  && hour < 12) { accent = '#c4a35a'; glow = 'rgba(196,163,90,0.08)'; }
-  else if (hour >= 12 && hour < 17) { accent = '#7b9eb8'; glow = 'rgba(123,158,184,0.08)'; }
-  else if (hour >= 17 && hour < 20) { accent = '#c4826b'; glow = 'rgba(196,130,107,0.08)'; }
-  else                               { accent = '#8a7db5'; glow = 'rgba(138,125,181,0.08)'; }
-  document.documentElement.style.setProperty('--accent', accent);
-  document.documentElement.style.setProperty('--accent-glow', glow);
-}
-
-/* ===== CLOCK ===== */
-function tick() {
-  const now = new Date();
-  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-
-  document.getElementById('clockTime').textContent =
-    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-  document.getElementById('clockSec').textContent = String(s).padStart(2,'0');
-
-  const ds = diasSemana[now.getDay()];
-  document.getElementById('dateLine').textContent =
-    `${ds}, ${now.getDate()} de ${meses[now.getMonth()]} de ${now.getFullYear()}`;
-
-  let greeting;
-  if      (h >= 5  && h < 12) greeting = 'Bom Dia';
-  else if (h >= 12 && h < 18) greeting = 'Boa Tarde';
-  else                         greeting = 'Boa Noite';
-  document.getElementById('greeting').textContent = greeting;
-
-  if (h !== lastHour) { updateAccent(h); lastHour = h; }
-}
-
-/* ===== QUOTES ===== */
-let qi = 0, quoteTimer;
-const QDUR = 9000;
-
-function showQuote(idx, animate) {
-  const tEl = document.getElementById('quoteText');
-  const aEl = document.getElementById('quoteAuthor');
-  const cEl = document.getElementById('quoteCat');
-  const pf  = document.getElementById('quotePF');
-
-  if (animate) {
-    tEl.classList.add('out'); aEl.classList.add('out'); cEl.classList.add('out');
-    setTimeout(() => {
-      tEl.textContent = `\u201C${quotes[idx].text}\u201D`;
-      aEl.textContent = quotes[idx].author;
-      cEl.textContent = quotes[idx].cat;
-      document.getElementById('quoteCounter').textContent = `${idx + 1}\u2009/\u2009${quotes.length}`;
-      tEl.classList.remove('out'); aEl.classList.remove('out'); cEl.classList.remove('out');
-    }, 400);
-  } else {
-    tEl.textContent = `\u201C${quotes[idx].text}\u201D`;
-    aEl.textContent = quotes[idx].author;
-    cEl.textContent = quotes[idx].cat;
-    document.getElementById('quoteCounter').textContent = `${idx + 1}\u2009/\u2009${quotes.length}`;
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('Service Worker registrado'))
+      .catch(err => console.error('SW erro:', err));
   }
-
-  pf.style.transition = 'none'; pf.style.width = '0%';
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    pf.style.transition = `width ${QDUR}ms linear`;
-    pf.style.width = '100%';
-  }));
-}
-
-function jumpToQuote(idx) {
-  qi = idx; showQuote(qi, true);
-  clearInterval(quoteTimer);
-  quoteTimer = setInterval(() => { qi = (qi + 1) % quotes.length; showQuote(qi, true); }, QDUR);
-}
-
-document.getElementById('prevBtn').onclick = () => jumpToQuote((qi - 1 + quotes.length) % quotes.length);
-document.getElementById('nextBtn').onclick = () => jumpToQuote((qi + 1) % quotes.length);
-
-/* ===== RITUALS ===== */
-const done = new Set();
-
-function renderRituals() {
-  const grid = document.getElementById('ritualsGrid');
-  grid.innerHTML = '';
-  rituals.forEach((r, i) => {
-    const el = document.createElement('div');
-    el.className = 'ritual' + (done.has(i) ? ' ritual--done' : '');
-    el.tabIndex = 0;
-    el.setAttribute('role', 'checkbox');
-    el.setAttribute('aria-checked', done.has(i));
-    el.innerHTML = `
-      <span class="ritual-num">${String(i + 1).padStart(2, '0')}</span>
-      <div class="ritual-body">
-        <span class="ritual-name">${r.name}</span>
-        <span class="ritual-desc">${r.desc}</span>
-      </div>
-      <div class="ritual-check">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>`;
-    const toggle = () => { done.has(i) ? done.delete(i) : done.add(i); renderRituals(); };
-    el.onclick = toggle;
-    el.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } };
-    grid.appendChild(el);
-  });
-  const n = done.size, t = rituals.length;
-  document.getElementById('rpText').textContent = n === t ? 'Completo' : `${n} de ${t}`;
-  document.getElementById('rpFill').style.width = `${(n / t) * 100}%`;
-}
-
-/* ===== FOCUS ===== */
-function renderFocus() {
-  const idx = new Date().getDay();
-  const f = dayFocus[idx];
-  document.getElementById('focusDayTag').textContent = diasSemana[idx];
-  document.getElementById('focusWord').textContent = f.word;
-  document.getElementById('focusDesc').textContent = f.desc;
-}
-
-/* ===== FOOTER ===== */
-function renderFooter() {
-  const h = new Date().getHours();
-  let msg;
-  if      (h < 12) msg = 'Que esse dia seja extraordinário.';
-  else if (h < 18) msg = 'Continue com essa energia até o fim do dia.';
-  else              msg = 'Você fez um ótimo trabalho hoje. Descanse bem.';
-  document.getElementById('footerMsg').textContent = msg;
-}
-
-/* ===== SCROLL REVEAL ===== */
-function initReveal() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-}
-
-/* ===== INIT ===== */
-tick();
-setInterval(tick, 1000);
-
-showQuote(0, false);
-quoteTimer = setInterval(() => { qi = (qi + 1) % quotes.length; showQuote(qi, true); }, QDUR);
-
-renderRituals();
-renderFocus();
-renderFooter();
-initReveal();
 </script>
 </body>
 </html>
