@@ -1,9 +1,11 @@
 /**
- * Bom Dia - Aplicativo de Bem-Estar Matinal
- * Versão Melhorada 2026
+ * BOM DIA — Premium Experience
+ * Refatoração Extrema 2026
  */
 
-/* ===== DATA ===== */
+/* ============================================
+   DATA — Curated Content
+   ============================================ */
 const quotes = [
   { text: "Cada manhã que acordamos é uma segunda chance de sermos tudo que somos capazes.", author: "Dalai Lama", cat: "Sabedoria" },
   { text: "O sucesso é a soma de pequenos esforços, repetidos dia após dia.", author: "Robert Collier", cat: "Consistência" },
@@ -29,7 +31,7 @@ const rituals = [
 ];
 
 const dayFocus = [
-  { word: "Repouso", desc: "Domingo é sagado. Descanse sem culpa, carregue as energias e se permita apenas ser.", icon: "🌙" },
+  { word: "Repouso", desc: "Domingo é sagrado. Descanse sem culpa, carregue as energias e se permita apenas ser.", icon: "🌙" },
   { word: "Intenção", desc: "Segunda-feira abre uma semana inteira de possibilidades. Defina suas intenções com clareza.", icon: "🎯" },
   { word: "Ação", desc: "Terça é hora de colocar os planos em movimento. Cada passo te aproxima do objetivo.", icon: "⚡" },
   { word: "Equilíbrio", desc: "Quarta é a metade da jornada. Reveja seu ritmo e celebre o que já conquistou.", icon: "⚖️" },
@@ -40,16 +42,18 @@ const dayFocus = [
 
 const breathingPattern = { inhale: 4, hold: 4, exhale: 4, holdEmpty: 4 };
 const breathingPhases = [
-  { name: "Inspire", duration: breathingPattern.inhale, icon: "🌅" },
-  { name: "Segure", duration: breathingPattern.hold, icon: "🌄" },
-  { name: "Expire", duration: breathingPattern.exhale, icon: "🌇" },
-  { name: "Pausa", duration: breathingPattern.holdEmpty, icon: "🌃" },
+  { name: "Inspire", duration: breathingPattern.inhale, icon: "🌅", scale: 1.5 },
+  { name: "Segure", duration: breathingPattern.hold, icon: "🌄", scale: 1.5 },
+  { name: "Expire", duration: breathingPattern.exhale, icon: "🌇", scale: 0.7 },
+  { name: "Pausa", duration: breathingPattern.holdEmpty, icon: "🌃", scale: 0.7 },
 ];
 
 const diasSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
 const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
-/* ===== STATE ===== */
+/* ============================================
+   STATE — Application State
+   ============================================ */
 const state = {
   currentQuote: 0,
   quoteTimer: null,
@@ -59,29 +63,38 @@ const state = {
   breathingPhase: 0,
   breathingTimer: null,
   theme: 'auto',
+  initialized: false,
 };
 
-/* ===== THEME ===== */
+/* ============================================
+   THEME — Dynamic Color System
+   ============================================ */
 const themes = {
   auto: (hour) => {
-    if (hour >= 5 && hour < 7) return { accent: '#d4956b', glow: 'rgba(212,149,107,0.12)', bg1: '#1a1a2e', bg2: '#16213e' };
-    if (hour >= 7 && hour < 12) return { accent: '#c4a35a', glow: 'rgba(196,163,90,0.10)', bg1: '#0f0e0c', bg2: '#1a1815' };
-    if (hour >= 12 && hour < 17) return { accent: '#7b9eb8', glow: 'rgba(123,158,184,0.10)', bg1: '#1a2634', bg2: '#0f1c2e' };
-    if (hour >= 17 && hour < 20) return { accent: '#c4826b', glow: 'rgba(196,130,107,0.12)', bg1: '#2d1f2e', bg2: '#1a1a2e' };
-    return { accent: '#8a7db5', glow: 'rgba(138,125,181,0.10)', bg1: '#0d0820', bg2: '#1a0f2e' };
+    if (hour >= 5 && hour < 7) return { hue: 30, sat: 50%, light: 55%, glow: 0.12 };   // Dawn
+    if (hour >= 7 && hour < 12) return { hue: 45, sat: 55%, light: 55%, glow: 0.10 };  // Morning
+    if (hour >= 12 && hour < 17) return { hue: 200, sat: 40%, light: 55%, glow: 0.10 }; // Day
+    if (hour >= 17 && hour < 20) return { hue: 15, sat: 50%, light: 55%, glow: 0.12 };  // Evening
+    return { hue: 260, sat: 45%, light: 55%, glow: 0.10 };                              // Night
   },
-  morning: { accent: '#c4a35a', glow: 'rgba(196,163,90,0.10)', bg1: '#0f0e0c', bg2: '#1a1815' },
-  day: { accent: '#7b9eb8', glow: 'rgba(123,158,184,0.10)', bg1: '#1a2634', bg2: '#0f1c2e' },
-  evening: { accent: '#c4826b', glow: 'rgba(196,130,107,0.12)', bg1: '#2d1f2e', bg2: '#1a1a2e' },
-  night: { accent: '#8a7db5', glow: 'rgba(138,125,181,0.10)', bg1: '#0d0820', bg2: '#1a0f2e' },
+  morning: { hue: 45, sat: 55%, light: 55%, glow: 0.10 },
+  day: { hue: 200, sat: 40%, light: 55%, glow: 0.10 },
+  evening: { hue: 15, sat: 50%, light: 55%, glow: 0.12 },
+  night: { hue: 260, sat: 45%, light: 55%, glow: 0.10 },
 };
 
 function applyTheme(themeData) {
   const root = document.documentElement;
-  root.style.setProperty('--accent', themeData.accent);
-  root.style.setProperty('--accent-glow', themeData.glow);
-  root.style.setProperty('--bg-gradient-start', themeData.bg1);
-  root.style.setProperty('--bg-gradient-end', themeData.bg2);
+  root.style.setProperty('--hue', themeData.hue);
+  root.style.setProperty('--sat', themeData.sat);
+  root.style.setProperty('--light', themeData.light);
+  root.style.setProperty('--glow-opacity', themeData.glow);
+
+  // Also update CSS custom properties for accent
+  const hsl = `hsl(${themeData.hue}, ${themeData.sat}, ${themeData.light})`;
+  const hsla = `hsla(${themeData.hue}, ${themeData.sat}, ${themeData.light}, ${themeData.glow})`;
+  root.style.setProperty('--accent', hsl);
+  root.style.setProperty('--accent-glow', hsla);
 }
 
 function updateTheme(hour = new Date().getHours()) {
@@ -89,7 +102,9 @@ function updateTheme(hour = new Date().getHours()) {
   applyTheme(typeof themeFn === 'function' ? themeFn(hour) : themeFn);
 }
 
-/* ===== CLOCK ===== */
+/* ============================================
+   CLOCK — Precision Time Display
+   ============================================ */
 function tick() {
   const now = new Date();
   const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
@@ -98,9 +113,15 @@ function tick() {
   const secEl = document.getElementById('clockSec');
   const secBar = document.getElementById('secondsBar');
 
-  if (timeEl) timeEl.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
-  if (secEl) secEl.textContent = String(s).padStart(2, '0');
-  if (secBar) secBar.style.width = `${(s / 60) * 100}%`;
+  if (timeEl) {
+    timeEl.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  }
+  if (secEl) {
+    secEl.textContent = String(s).padStart(2, '0');
+  }
+  if (secBar) {
+    secBar.style.width = `${(s / 60) * 100}%`;
+  }
 
   const ds = diasSemana[now.getDay()];
   const dateEl = document.getElementById('dateLine');
@@ -120,7 +141,9 @@ function tick() {
   updateTheme(h);
 }
 
-/* ===== QUOTES ===== */
+/* ============================================
+   QUOTES — Smooth Transitions
+   ============================================ */
 function showQuote(idx, animate = true) {
   const tEl = document.getElementById('quoteText');
   const aEl = document.getElementById('quoteAuthor');
@@ -132,20 +155,26 @@ function showQuote(idx, animate = true) {
   const doAnimate = animate && state.quoteTimer !== null;
 
   if (doAnimate) {
+    // Fade out
     tEl.style.opacity = '0';
-    tEl.style.transform = 'translateY(12px)';
+    tEl.style.transform = 'translateY(16px) scale(0.98)';
+    tEl.style.filter = 'blur(8px)';
     aEl.style.opacity = '0';
     cEl.style.opacity = '0';
 
     setTimeout(() => {
+      // Update content
       tEl.textContent = `"${quotes[idx].text}"`;
       aEl.textContent = `— ${quotes[idx].author}`;
       cEl.textContent = quotes[idx].cat;
-      document.getElementById('quoteCounter').textContent = `${idx + 1} / ${quotes.length}`;
+      const counterEl = document.getElementById('quoteCounter');
+      if (counterEl) counterEl.textContent = `${idx + 1} / ${quotes.length}`;
 
-      tEl.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      // Fade in
+      tEl.style.transition = 'opacity 0.6s cubic-bezier(0.19, 1, 0.22, 1), transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), filter 0.6s';
       tEl.style.opacity = '1';
-      tEl.style.transform = 'translateY(0)';
+      tEl.style.transform = 'translateY(0) scale(1)';
+      tEl.style.filter = 'blur(0)';
       aEl.style.opacity = '1';
       cEl.style.opacity = '1';
     }, 400);
@@ -153,9 +182,11 @@ function showQuote(idx, animate = true) {
     tEl.textContent = `"${quotes[idx].text}"`;
     aEl.textContent = `— ${quotes[idx].author}`;
     cEl.textContent = quotes[idx].cat;
-    document.getElementById('quoteCounter').textContent = `${idx + 1} / ${quotes.length}`;
+    const counterEl = document.getElementById('quoteCounter');
+    if (counterEl) counterEl.textContent = `${idx + 1} / ${quotes.length}`;
   }
 
+  // Progress bar animation
   if (pf) {
     pf.style.transition = 'none';
     pf.style.width = '0%';
@@ -185,7 +216,9 @@ function resetQuoteTimer() {
   state.quoteTimer = setInterval(() => nextQuote(), 8000);
 }
 
-/* ===== RITUALS ===== */
+/* ============================================
+   RITUALS — Persistent Checklists
+   ============================================ */
 function loadRituals() {
   const today = new Date().toDateString();
   const saved = localStorage.getItem('bomdia-rituals-' + today);
@@ -200,12 +233,16 @@ function saveRituals() {
 }
 
 function toggleRitual(index) {
-  if (state.completedRituals.has(index)) {
-    state.completedRituals.delete(index);
-  } else {
+  const wasCompleted = state.completedRituals.has(index);
+
+  if (!wasCompleted) {
     state.completedRituals.add(index);
     triggerConfetti();
+    playSound('check');
+  } else {
+    state.completedRituals.delete(index);
   }
+
   saveRituals();
   renderRituals();
 }
@@ -253,7 +290,9 @@ function renderRituals() {
   if (rpFill) rpFill.style.width = `${(n / t) * 100}%`;
 }
 
-/* ===== BREATHING ===== */
+/* ============================================
+   BREATHING — Guided Exercise
+   ============================================ */
 function startBreathing() {
   if (state.breathingActive) return;
   state.breathingActive = true;
@@ -267,12 +306,12 @@ function startBreathing() {
 
   function updatePhase() {
     const phase = breathingPhases[phaseIndex];
+
     if (phaseEl) phaseEl.textContent = `${phase.icon} ${phase.name}`;
     if (counterEl) counterEl.textContent = remaining;
 
     if (circleEl) {
-      const scale = phase.name === 'Inspire' ? 1.5 : phase.name === 'Expire' ? 0.8 : 1;
-      circleEl.style.transform = `scale(${scale})`;
+      circleEl.style.transform = `scale(${phase.scale})`;
     }
 
     remaining--;
@@ -305,7 +344,9 @@ function stopBreathing() {
   document.getElementById('breathStop')?.classList.add('hidden');
 }
 
-/* ===== FOCUS ===== */
+/* ============================================
+   FOCUS — Daily Word
+   ============================================ */
 function renderFocus() {
   const idx = new Date().getDay();
   const f = dayFocus[idx];
@@ -321,7 +362,9 @@ function renderFocus() {
   if (iconEl) iconEl.textContent = f.icon;
 }
 
-/* ===== MOOD ===== */
+/* ============================================
+   MOOD — Emotional Check-in
+   ============================================ */
 const moodMessages = {
   happy: "Que maravilha! Que essa energia se espalhe por todo o seu dia! ✨",
   calm: "Perfeito. A calma é sua superpotência hoje. 🌿",
@@ -360,7 +403,9 @@ function loadMood() {
   }
 }
 
-/* ===== PARTICLES ===== */
+/* ============================================
+   PARTICLES — Enhanced Canvas Animation
+   ============================================ */
 function initParticles() {
   const canvas = document.getElementById('particles');
   if (!canvas) return;
@@ -368,6 +413,7 @@ function initParticles() {
   const ctx = canvas.getContext('2d');
   let particles = [];
   let animationId;
+  let mouseX = 0, mouseY = 0;
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -382,19 +428,38 @@ function initParticles() {
     reset() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.vx = (Math.random() - 0.5) * 0.3;
-      this.vy = (Math.random() - 0.5) * 0.3;
-      this.radius = Math.random() * 2 + 1;
+      this.vx = (Math.random() - 0.5) * 0.2;
+      this.vy = (Math.random() - 0.5) * 0.2;
+      this.radius = Math.random() * 2 + 0.5;
       this.alpha = Math.random() * 0.5 + 0.2;
+      this.baseAlpha = this.alpha;
     }
 
     update() {
+      // Mouse interaction
+      const dx = mouseX - this.x;
+      const dy = mouseY - this.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const maxDist = 150;
+
+      if (dist < maxDist) {
+        const force = (maxDist - dist) / maxDist;
+        this.vx -= (dx / dist) * force * 0.02;
+        this.vy -= (dy / dist) * force * 0.02;
+      }
+
       this.x += this.vx;
       this.y += this.vy;
 
-      if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-        this.reset();
-      }
+      // Damping
+      this.vx *= 0.99;
+      this.vy *= 0.99;
+
+      // Wrap around
+      if (this.x < -50) this.x = canvas.width + 50;
+      if (this.x > canvas.width + 50) this.x = -50;
+      if (this.y < -50) this.y = canvas.height + 50;
+      if (this.y > canvas.height + 50) this.y = -50;
     }
 
     draw() {
@@ -407,23 +472,49 @@ function initParticles() {
 
   function init() {
     particles = [];
-    for (let i = 0; i < 50; i++) {
+    const count = Math.floor((canvas.width * canvas.height) / 20000);
+    for (let i = 0; i < Math.min(count, 80); i++) {
       particles.push(new Particle());
     }
   }
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw connections
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
     particles.forEach(p => {
       p.update();
       p.draw();
     });
+
     animationId = requestAnimationFrame(animate);
   }
 
   resize();
   init();
   animate();
+
+  // Mouse tracking
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
 
   window.addEventListener('resize', () => {
     resize();
@@ -433,7 +524,9 @@ function initParticles() {
   return () => cancelAnimationFrame(animationId);
 }
 
-/* ===== CONFETTI ===== */
+/* ============================================
+   CONFETTI — Premium Celebration
+   ============================================ */
 function triggerConfetti() {
   const canvas = document.getElementById('confetti');
   if (!canvas) return;
@@ -443,39 +536,46 @@ function triggerConfetti() {
   canvas.height = window.innerHeight;
 
   const pieces = [];
-  const colors = ['#c4a35a', '#7b9eb8', '#c4826b', '#8a7db5', '#ffffff'];
+  const colors = ['#c4a35a', '#7b9eb8', '#c4826b', '#8a7db5', '#ffffff', '#d4956b'];
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 120; i++) {
     pieces.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height - canvas.height,
-      vx: (Math.random() - 0.5) * 4,
-      vy: Math.random() * 5 + 3,
+      vx: (Math.random() - 0.5) * 5,
+      vy: Math.random() * 4 + 4,
       rotation: Math.random() * 360,
-      vr: (Math.random() - 0.5) * 10,
+      vr: (Math.random() - 0.5) * 15,
       color: colors[Math.floor(Math.random() * colors.length)],
-      size: Math.random() * 8 + 4,
+      size: Math.random() * 10 + 5,
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpeed: Math.random() * 0.1 + 0.05,
     });
   }
 
   let frame = 0;
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     pieces.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
       p.rotation += p.vr;
+      p.wobble += p.wobbleSpeed;
+
+      const wobbleX = Math.sin(p.wobble) * 2;
 
       ctx.save();
-      ctx.translate(p.x, p.y);
+      ctx.translate(p.x + wobbleX, p.y);
       ctx.rotate((p.rotation * Math.PI) / 180);
       ctx.fillStyle = p.color;
+      ctx.globalAlpha = 1 - (frame / 180);
       ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
       ctx.restore();
     });
 
     frame++;
-    if (frame < 120) {
+    if (frame < 180) {
       requestAnimationFrame(animate);
     } else {
       canvas.style.display = 'none';
@@ -486,7 +586,34 @@ function triggerConfetti() {
   animate();
 }
 
-/* ===== SCROLL REVEAL ===== */
+/* ============================================
+   SOUND — Subtle Audio Feedback
+   ============================================ */
+const audioCtx = typeof window !== 'undefined' ? new (window.AudioContext || window.webkitAudioContext)() : null;
+
+function playSound(type) {
+  if (!audioCtx) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  const oscillator = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+
+  if (type === 'check') {
+    oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+    oscillator.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.1); // G5
+    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + 0.15);
+  }
+}
+
+/* ============================================
+   SCROLL REVEAL — Intersection Observer
+   ============================================ */
 function initReveal() {
   const observer = new IntersectionObserver(
     entries => {
@@ -496,13 +623,15 @@ function initReveal() {
         }
       });
     },
-    { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    { threshold: 0.15, rootMargin: '0px 0px -80px 0px' }
   );
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-/* ===== SMOOTH SCROLL ===== */
+/* ============================================
+   SMOOTH SCROLL — Native Enhancement
+   ============================================ */
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -515,7 +644,9 @@ function initSmoothScroll() {
   });
 }
 
-/* ===== DOT NAV ===== */
+/* ============================================
+   DOT NAV — Active Section Indicator
+   ============================================ */
 function initDotNav() {
   const sections = ['hero', 'quotes', 'breathing', 'rituals', 'focus'];
   const dots = document.querySelectorAll('.dot-link');
@@ -523,14 +654,14 @@ function initDotNav() {
   const observer = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
           dots.forEach(dot => {
             dot.classList.toggle('active', dot.dataset.section === entry.target.id);
           });
         }
       });
     },
-    { threshold: 0.3 }
+    { threshold: [0.3, 0.6, 0.9] }
   );
 
   sections.forEach(id => {
@@ -539,7 +670,9 @@ function initDotNav() {
   });
 }
 
-/* ===== KEYBOARD SHORTCUTS ===== */
+/* ============================================
+   KEYBOARD — Accessibility Shortcuts
+   ============================================ */
 function initKeyboard() {
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -560,22 +693,27 @@ function initKeyboard() {
   });
 }
 
-/* ===== INIT ===== */
+/* ============================================
+   INIT — Application Bootstrap
+   ============================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  // Load saved data
+  // Load persisted data
   loadRituals();
   loadMood();
 
-  // Initialize
+  // Initialize clock
   tick();
   setInterval(tick, 1000);
 
+  // Initialize quotes
   showQuote(state.currentQuote, false);
   resetQuoteTimer();
 
+  // Render content
   renderRituals();
   renderFocus();
 
+  // Initialize interactions
   initReveal();
   initSmoothScroll();
   initDotNav();
@@ -594,4 +732,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial theme
   updateTheme();
+
+  // Mark as initialized
+  state.initialized = true;
 });
