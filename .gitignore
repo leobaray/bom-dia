@@ -9,8 +9,6 @@ Thumbs.db
 *.swo
 *~
 
-# Claude
-.claude
 
 # Logs
 *.log
@@ -24,4 +22,3 @@ node_modules/
 # Environment
 .env
 .env.local
-CLAUDE.md
